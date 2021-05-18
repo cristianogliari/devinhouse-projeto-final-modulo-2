@@ -36,7 +36,6 @@ public class Interessado implements Serializable {
 	}
 	
 	public Interessado(int id, String nminteressado, String nuidentificacao, Date dtnascimento, String flativo) {
-		super();
 		this.id = id;
 		this.nminteressado = nminteressado;
 		this.nuidentificacao = nuidentificacao;
