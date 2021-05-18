@@ -33,7 +33,6 @@ public class Assunto implements Serializable {
 	}
 	
 	public Assunto(int id, String descricao, Date dtcadastro, String flativo) {
-		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.dtcadastro = dtcadastro;
