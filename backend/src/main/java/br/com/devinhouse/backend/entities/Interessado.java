@@ -1,10 +1,8 @@
 package br.com.devinhouse.backend.entities;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
-import org.hibernate.validator.constraints.br.CPF;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +22,6 @@ public class Interessado implements Serializable {
 	@Column(nullable = false)
 	private String nminteressado;
 	
-	@CPF(message = "CPF inválido")
 	@Column(nullable = false)
 	private String nuidentificacao;
 	
