@@ -72,14 +72,16 @@ public class ProcessoService {
 	}
 	
 //	5 - Deverá haver um endpoint para buscar um ou mais processos baseado em seu interessado (CDINTERESSADO);
-	public List<Processo> buscarProcessosPorInteressados(Interessado termo) {
-		return repository.findByCdinteressado(termo);
-	}
-	
+//	public List<Processo> buscarProcessosPorInteressados(String termo) {
+//		Processo processoEncontrado = repository.findByCdinteressado(termo);
+//		
+//		return repository.findByCdinteressado(termo);
+//	}
+//	
 //	6 - Deverá haver um endpoint para buscar um ou mais processos baseado em seu assunto (CDASSUNTO);
-	public List<Processo> buscarProcessosPorAssunto(Assunto termo) {
-		return repository.findByCdassunto(termo);
-	}
+//	public List<Processo> buscarProcessosPorAssunto(Assunto termo) {
+//		return repository.findByCdassunto(termo);
+//	}
 	
 //	7 - Deverá haver um endpoint para atualização de todos os atributos de um processo baseado na sua identificação única (ID);
 	public Processo atualizarProcessoPorID(Integer id, Processo obj) {
