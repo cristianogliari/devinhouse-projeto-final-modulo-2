@@ -9,6 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.br.CPF;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Interessado implements Serializable {
 	
@@ -23,6 +27,7 @@ public class Interessado implements Serializable {
 	private String nminteressado;
 	
 	@Column(nullable = false)
+	@CPF
 	private String nuidentificacao;
 	
 	@Column(nullable = false)

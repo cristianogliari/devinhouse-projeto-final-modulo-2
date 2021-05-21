@@ -1,5 +1,7 @@
 package br.com.devinhouse.backend.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +14,23 @@ public class InteressadoService {
 	@Autowired
 	private InteressadoRepository repository;
 
-	public Interessado cadastrarInteressado(Interessado interessado) {
-		Interessado resultado = repository.findByCpf(interessado.getNuidentificacao());
-		if (resultado != null) {
-			System.out.println("CPF já cadastrado no nome " + resultado.getNminteressado());
-			return null;
+	private boolean verificarCadastroNuidentificacao(String termo) {
+		List<Interessado> todosInteressados = repository.findAll();
+		boolean status = false;
+		
+		for(Interessado each : todosInteressados ) {
+			if(termo.equals(each.getNuidentificacao())) {
+				status = true;
+			}
+		}	
+		return status;
+	}
+	
+	public Interessado cadastrarInteressado(Interessado obj) {
+		if(!verificarCadastroNuidentificacao(obj.getNuidentificacao())) {
+			return repository.save(obj);
 		} else {
-			repository.save(interessado);
-			return interessado;
+			throw new RuntimeException("CPF ja possui cadastro.");
 		}
 	};
 
@@ -29,13 +40,13 @@ public class InteressadoService {
 		return encontrado;
 	}
 
-	public Interessado buscarInteressadoPeloCpf(String nuidentificacao) {
-		Interessado encontrado = repository.findByCpf(nuidentificacao);
-
-		return encontrado;
+	public Interessado buscarInteressadoPeloCpf(String termo) {
+		Interessado interessadoEncontrado = repository.findByNuidentificacao(termo);
+		
+		if(verificarCadastroNuidentificacao(interessadoEncontrado.getNuidentificacao())) {
+			return interessadoEncontrado;
+		} else {
+			throw new RuntimeException("CPF nao cadastrado.");
+		}
 	}
-
-//	7 - Não poderá ser cadastrado um novo interessado com um id já existente;
-//	8 - Não poderá ser cadastrado um novo interessado com um mesmo documento de indentificação;
-//	9 - Não poderá ser cadastrado um novo interessado com um documento de identificação inválido;
 }
