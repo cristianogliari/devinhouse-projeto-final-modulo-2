@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.devinhouse.backend.entities.Assunto;
+import br.com.devinhouse.backend.entities.Interessado;
+import br.com.devinhouse.backend.services.InteressadoService;
 
 @RestController
 @RequestMapping(value = "/interessado")
@@ -55,8 +56,8 @@ public class InteressadoController {
 			+ "/buscar/cpf/{cpf}", method = GET, produces = APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	public Interessado buscarInteressadoPeloCpf(@PathVariable Integer cpf) {
-		return service.buscarInteressadoPeloCpf(cpf);
+	public Interessado buscarInteressadoPeloCpf(@PathVariable String nuidentificacao) {
+		return service.buscarInteressadoPeloCpf(nuidentificacao);
 	}
 }
 
