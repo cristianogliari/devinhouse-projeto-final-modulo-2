@@ -76,9 +76,9 @@ public class ProcessoController {
 	}
 	
 	//	8 - Deverá haver um endpoint para exclusão de um processo baseado na sua identificação única (ID);
-	@RequestMapping(value = "/atualizar/id/{id}", method = DELETE, produces = APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/remover/id/{id}", method = DELETE, produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Processo> removerProcessoPorIDController(Integer id) {
+	public List<Processo> removerProcessoPorIDController(@PathVariable Integer id) {
 		return service.removerProcessoPorID(id);
 	}
 }
