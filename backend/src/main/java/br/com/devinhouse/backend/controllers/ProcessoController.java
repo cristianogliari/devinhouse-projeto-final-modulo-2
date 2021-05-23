@@ -55,18 +55,18 @@ public class ProcessoController {
 	}	
 	
 	//	5 - Deverá haver um endpoint para buscar um ou mais processos baseado em seu interessado (CDINTERESSADO);
-	//	@RequestMapping(value = "/buscar/interessado/{interessado}", produces = APPLICATION_JSON_VALUE)
-	//	@ResponseStatus(HttpStatus.OK)
-	//	public List<Processo> buscarProcessosPorInteressadosController(@PathVariable("interessado") String termo) {
-	//		return service.buscarProcessosPorInteressados(termo);
-	//	}
+	@RequestMapping(value = "/buscar/interessado/{interessado}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public List<Processo> buscarProcessosPorInteressadosController(@PathVariable("interessado") Integer termo) {
+		return service.buscarProcessosPorInteressados(termo);
+	}
 	
 	//	6 - Deverá haver um endpoint para buscar um ou mais processos baseado em seu assunto (CDASSUNTO);
-	//	@RequestMapping(value = "/buscar/assunto/{assunto}", produces = APPLICATION_JSON_VALUE)
-	//	@ResponseStatus(HttpStatus.OK)
-	//	public List<Processo> buscarProcessosPorInteressadosController(@PathVariable("assunto") String termo) {
-	//		return service.buscarProcessosPorAssunto(termo);
-	//	}
+	@RequestMapping(value = "/buscar/assunto/{assunto}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public List<Processo> buscarProcessosPorAssuntoController(@PathVariable("assunto") Integer termo) {
+		return service.buscarProcessosPorAssunto(termo);
+	}
 	
 	//	7 - Deverá haver um endpoint para atualização de todos os atributos de um processo baseado na sua identificação única (ID);
 	@RequestMapping(value = "/atualizar/id/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)

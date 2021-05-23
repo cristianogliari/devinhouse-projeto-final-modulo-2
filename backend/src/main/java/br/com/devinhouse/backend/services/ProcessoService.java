@@ -16,7 +16,7 @@ import br.com.devinhouse.backend.repositories.ProcessoRepository;
 public class ProcessoService {
 	
 	@Autowired
-	private ProcessoRepository repository;
+	private ProcessoRepository processoRepository;
 	
 	@Autowired
 	private AssuntoRepository assuntoRepository;
@@ -25,7 +25,7 @@ public class ProcessoService {
 	private InteressadoRepository interessadoRepository;
 	
 	private boolean verificaExistenciaDeProcesso(Integer id) {
-		Processo processoEncontrado = repository.findById(id).get();				
+		Processo processoEncontrado = processoRepository.findById(id).get();				
 		boolean status = false;
 		
 		if(processoEncontrado.getId() > 0) {
@@ -45,7 +45,7 @@ public class ProcessoService {
 		//		10 - A formatação da chave do processo deve seguir a seguinte mascara SGORGAOSETOR NUPROCESSO/NUANO ex: SOFT 1/2021;
 		obj.setChaveprocesso(obj.getSgorgaosetor() + " " + obj.getNuprocesso() + "/" + obj.getNuano());
 				
-		return repository.save(obj);
+		return processoRepository.save(obj);
 
 		// 		TODO Regras de negócio	
 		//		2 - Não poderá ser cadastrado um novo processo com uma chave de processo já existente;
@@ -58,34 +58,38 @@ public class ProcessoService {
 		
 //	2 - Deverá haver um endpoint para listagem de todos os processos, retornando todos os atributos de cada processo;
 	public List<Processo> buscarTodosOsProcessos() {
-		return repository.findAll();
+		return processoRepository.findAll();
 	}
 	
 //	3 - Deverá haver um endpoint para buscar um processo baseado na sua identificação única (ID);
 	public Processo buscarProcessoPorID(Integer id) {
-		return repository.findById(id).get();
+		return processoRepository.findById(id).get();
 	}	
 	
 //	4 - Deverá haver um endpoint para buscar um processo baseado no seu número de processo (CHAVEPROCESSO);
 	public Processo buscarProcessoPorChaveProcesso(String termo) {
-		return repository.findByChaveprocesso(termo);
+		return processoRepository.findByChaveprocesso(termo);
 	}
 	
 //	5 - Deverá haver um endpoint para buscar um ou mais processos baseado em seu interessado (CDINTERESSADO);
-//	public List<Processo> buscarProcessosPorInteressados(String termo) {
-//		Processo processoEncontrado = repository.findByCdinteressado(termo);
-//		
-//		return repository.findByCdinteressado(termo);
-//	}
-//	
+	public List<Processo> buscarProcessosPorInteressados(Integer termo) {
+		Interessado interessadoLocalizado = interessadoRepository.findById(termo).get();
+		List<Processo> processosLocalizados = processoRepository.findByCdinteressado(interessadoLocalizado);
+	
+		return processosLocalizados;	
+	}
+	
 //	6 - Deverá haver um endpoint para buscar um ou mais processos baseado em seu assunto (CDASSUNTO);
-//	public List<Processo> buscarProcessosPorAssunto(Assunto termo) {
-//		return repository.findByCdassunto(termo);
-//	}
+	public List<Processo> buscarProcessosPorAssunto(Integer termo) {
+		Assunto assuntoLocalizado = assuntoRepository.findById(termo).get();
+		List<Processo> processosLocalizados = processoRepository.findByCdassunto(assuntoLocalizado);
+		
+		return processosLocalizados;
+	}
 	
 //	7 - Deverá haver um endpoint para atualização de todos os atributos de um processo baseado na sua identificação única (ID);
 	public Processo atualizarProcessoPorID(Integer id, Processo obj) {
-		Processo processoEncontrado = repository.findById(id).get();
+		Processo processoEncontrado = processoRepository.findById(id).get();
 		
 		if (verificaExistenciaDeProcesso(id)) {
 			if(!obj.getDescricao().isBlank()) {
@@ -112,14 +116,14 @@ public class ProcessoService {
 			throw new RuntimeException("Processo não encontrado");
 		}
 		
-		return repository.save(processoEncontrado);
+		return processoRepository.save(processoEncontrado);
 	}
 	
 //	8 - Deverá haver um endpoint para exclusão de um processo baseado na sua identificação única (ID);
 	public List<Processo> removerProcessoPorID(Integer id) {
-		Processo processoFiltrado = repository.findById(id).get();
-		repository.delete(processoFiltrado);
+		Processo processoFiltrado = processoRepository.findById(id).get();
+		processoRepository.delete(processoFiltrado);
 		
-		return repository.findAll();
+		return processoRepository.findAll();
 	}
 }
