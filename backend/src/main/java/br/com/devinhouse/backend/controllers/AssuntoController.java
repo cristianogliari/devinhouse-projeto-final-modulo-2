@@ -4,6 +4,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +24,19 @@ public class AssuntoController {
 	@Autowired
 	private AssuntoService service;
 
-	@RequestMapping(value = "/cadastro", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/cadastrar", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Assunto cadastrarAssunto(@RequestBody Assunto assunto) {
 		return service.cadastrarAssunto(assunto);
 	}
-
-	@RequestMapping(value = "buscar/id/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
+	
+	@RequestMapping(value = "/buscar", method = GET, produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public List<Assunto> buscarTodosOsAssuntosController() {
+		return service.buscarTodosOsAssuntos();
+	}
+	
+	@RequestMapping(value = "/buscar/id/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Assunto buscarAssuntoPeloId(@PathVariable Integer id) {
 		return service.buscarAssuntoPeloId(id);
