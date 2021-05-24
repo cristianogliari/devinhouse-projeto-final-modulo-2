@@ -18,22 +18,22 @@ public class Processo implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(nullable = false)
+	@Column
 	private int id;
 	
-	@Column(nullable = false)
+	@Column(columnDefinition = "int NOT NULL")
 	private int nuprocesso;
 	
-	@Column(nullable = false)
+	@Column(columnDefinition = "char(4) NOT NULL")
 	private String sgorgaosetor;
 	
-	@Column(nullable = false)
+	@Column(columnDefinition = "char(4) NOT NULL")
 	private String nuano;
 	
-	@Column(nullable = false)
+	@Column(columnDefinition = "varchar(50) NOT NULL")
 	private String chaveprocesso;
 	
-	@Column(nullable = false)
+	@Column(columnDefinition = "varchar(250) NOT NULL")
 	private String descricao;
 
 	@OneToOne

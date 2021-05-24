@@ -23,11 +23,13 @@ public class InteressadoService {
 				status = true;
 			}
 		}	
+
 		return status;
 	}
 	
 	public Interessado cadastrarInteressado(Interessado obj) {
 		if(!verificarCadastroNuidentificacao(obj.getNuidentificacao())) {
+			obj.setFlativo("S");
 			return repository.save(obj);
 		} else {
 			throw new RuntimeException("CPF ja possui cadastro.");
