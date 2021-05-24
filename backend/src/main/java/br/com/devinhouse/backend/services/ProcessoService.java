@@ -28,7 +28,7 @@ public class ProcessoService {
 		Processo processoEncontrado = processoRepository.findById(id).get();				
 		boolean status = false;
 		
-		if(processoEncontrado.getId() > 0) {
+		if(id.equals(processoEncontrado.getId())) {
 			status = true;
 		}
 		return status;
@@ -36,24 +36,33 @@ public class ProcessoService {
 	
 //	1 - Deverá haver um endpoint para criação de um processo;
 	public Processo cadastrarProcesso(Processo obj) {
-		Assunto assuntoLocalizado = assuntoRepository.findById(obj.getCdassunto().getId()).get();
-		obj.setCdassunto(assuntoLocalizado);
+		char ativo = 'S';
 		
+		Assunto assuntoLocalizado = assuntoRepository.findById(obj.getCdassunto().getId()).get();
 		Interessado interessadoLocalizado = interessadoRepository.findById(obj.getCdinteressado().getId()).get();
-		obj.setCdinteressado(interessadoLocalizado);
 
-		//		10 - A formatação da chave do processo deve seguir a seguinte mascara SGORGAOSETOR NUPROCESSO/NUANO ex: SOFT 1/2021;
-		obj.setChaveprocesso(obj.getSgorgaosetor() + " " + obj.getNuprocesso() + "/" + obj.getNuano());
+		//		Não poderá ser cadastrado um novo processo com assuntos inativos;
+		if(assuntoLocalizado.getFlativo().charAt(0) == ativo) {
+			obj.setCdassunto(assuntoLocalizado);
+		} else {
+			throw new RuntimeException("Assunto inativo, favor selecionar um assunto ativo.");
+		}
 				
-		return processoRepository.save(obj);
-
-		// 		TODO Regras de negócio	
-		//		2 - Não poderá ser cadastrado um novo processo com uma chave de processo já existente;
-		//		3 - Não poderá ser cadastrado um novo processo com interessados inativos;
-		//		4 - Não poderá ser cadastrado um novo processo com assuntos inativos;
-		//		5 - Não poderá ser cadastrado um novo processo com interessados inexistentes no sistema;
-		//		6 - Não poderá ser cadastrado um novo processo com assuntos inexistentes no sistema;
-
+//		Não poderá ser cadastrado um novo processo com interessados inativos;
+		if(interessadoLocalizado.getFlativo().charAt(0) == ativo) {
+			obj.setCdinteressado(interessadoLocalizado);	
+		} else {
+			throw new RuntimeException("Interessado inativo, favor selecionar um interassado ativo.");
+		}
+		
+		obj.setChaveprocesso("XXXX 1/2000");
+		Processo processoSalvo = processoRepository.save(obj);
+		
+//		Numero do processo igual ID
+		processoSalvo.setNuprocesso(processoSalvo.getId());
+		processoSalvo.setChaveprocesso(processoSalvo.getSgorgaosetor() + " " + processoSalvo.getNuprocesso() + "/" + processoSalvo.getNuano());
+		
+		return processoRepository.save(processoSalvo);
 	}
 		
 //	2 - Deverá haver um endpoint para listagem de todos os processos, retornando todos os atributos de cada processo;
@@ -68,7 +77,7 @@ public class ProcessoService {
 	
 //	4 - Deverá haver um endpoint para buscar um processo baseado no seu número de processo (CHAVEPROCESSO);
 	public Processo buscarProcessoPorChaveProcesso(String termo) {
-		return processoRepository.findByChaveprocesso(termo);
+		return processoRepository.findByChaveprocesso(termo.toUpperCase());
 	}
 	
 //	5 - Deverá haver um endpoint para buscar um ou mais processos baseado em seu interessado (CDINTERESSADO);
@@ -89,34 +98,32 @@ public class ProcessoService {
 	
 //	7 - Deverá haver um endpoint para atualização de todos os atributos de um processo baseado na sua identificação única (ID);
 	public Processo atualizarProcessoPorID(Integer id, Processo obj) {
-		Processo processoEncontrado = processoRepository.findById(id).get();
-		
 		if (verificaExistenciaDeProcesso(id)) {
-			if(!obj.getDescricao().isBlank()) {
+			char ativo = 'S';
+
+			Processo processoEncontrado = processoRepository.findById(id).get();
+
+			if(obj.getDescricao() != null) {
 				processoEncontrado.setDescricao(obj.getDescricao());
 			}
-			if(!obj.getSgorgaosetor().isBlank()) {
-				processoEncontrado.setSgorgaosetor(obj.getSgorgaosetor());
+			if(obj.getCdassunto() != null) {
+				Assunto assuntoLocalizado = assuntoRepository.findById(obj.getCdassunto().getId()).get();
+				if(assuntoLocalizado.getFlativo().charAt(0) == ativo) {
+					processoEncontrado.setCdassunto(assuntoLocalizado);
+				} else {
+					throw new RuntimeException("Assunto inativo, favor selecionar um assunto ativo.");
+				}
 			}
-			if(!obj.getNuano().isBlank()) {
-				processoEncontrado.setNuano(obj.getNuano());
+			if(obj.getCdinteressado() != null) {
+				Interessado interessadoLocalizado = interessadoRepository.findById(obj.getCdinteressado().getId()).get();
+				if(interessadoLocalizado.getFlativo().charAt(0) == ativo) {
+					processoEncontrado.setCdinteressado(interessadoLocalizado);	
+				} else {
+					throw new RuntimeException("Interessado inativo, favor selecionar um interessado ativo.");
+				}
 			}
-			if(!obj.getChaveprocesso().isBlank()) {
-				processoEncontrado.setChaveprocesso(obj.getChaveprocesso());
-			}
-			if(!obj.getCdassunto().getDescricao().isBlank()) {
-				Assunto assuntoAtualizadoEncontrado = assuntoRepository.findById(obj.getCdassunto().getId()).get();
-				processoEncontrado.setCdassunto(assuntoAtualizadoEncontrado);
-			}
-			if(!obj.getCdinteressado().getNminteressado().isBlank()) {
-				Interessado interessadoAtualizadoEncontrado = interessadoRepository.findById(obj.getCdinteressado().getId()).get();
-				processoEncontrado.setCdinteressado(interessadoAtualizadoEncontrado);
-			}
-		} else {
-			throw new RuntimeException("Processo não encontrado");
-		}
-		
-		return processoRepository.save(processoEncontrado);
+			return processoRepository.save(processoEncontrado);			
+		} throw new RuntimeException("Processo não encontrado");
 	}
 	
 //	8 - Deverá haver um endpoint para exclusão de um processo baseado na sua identificação única (ID);
