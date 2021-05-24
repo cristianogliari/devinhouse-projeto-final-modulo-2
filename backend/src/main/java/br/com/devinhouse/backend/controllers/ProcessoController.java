@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,21 +49,21 @@ public class ProcessoController {
 	}
 		
 	//	4 - Deverá haver um endpoint para buscar um processo baseado no seu número de processo (CHAVEPROCESSO);
-	@RequestMapping(value = "/buscar/chaveprocesso/{chaveprocesso}", produces = APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/buscar/chaveprocesso", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Processo buscarProcessoPorChaveProcessoController(@PathVariable("chaveprocesso") String termo) {
+	public Processo buscarProcessoPorChaveProcessoController(@RequestParam("value") String termo) {
 		return service.buscarProcessoPorChaveProcesso(termo);
 	}	
 	
 	//	5 - Deverá haver um endpoint para buscar um ou mais processos baseado em seu interessado (CDINTERESSADO);
-	@RequestMapping(value = "/buscar/interessado/{interessado}", produces = APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/buscar/interessado/id/{interessado}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Processo> buscarProcessosPorInteressadosController(@PathVariable("interessado") Integer termo) {
 		return service.buscarProcessosPorInteressados(termo);
 	}
 	
 	//	6 - Deverá haver um endpoint para buscar um ou mais processos baseado em seu assunto (CDASSUNTO);
-	@RequestMapping(value = "/buscar/assunto/{assunto}", produces = APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/buscar/assunto/id/{assunto}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Processo> buscarProcessosPorAssuntoController(@PathVariable("assunto") Integer termo) {
 		return service.buscarProcessosPorAssunto(termo);
