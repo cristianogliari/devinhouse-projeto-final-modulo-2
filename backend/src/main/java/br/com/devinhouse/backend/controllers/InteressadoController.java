@@ -16,7 +16,7 @@ import br.com.devinhouse.backend.entities.Interessado;
 import br.com.devinhouse.backend.services.InteressadoService;
 
 @RestController	
-@RequestMapping(value = "/interessado/v1", headers = "api-version=v1")
+@RequestMapping(value = "/interessados/v1", headers = "api-version=v1")
 public class InteressadoController {
 
 	@Autowired

@@ -25,12 +25,21 @@ public class ProcessoService {
 	private InteressadoRepository interessadoRepository;
 	
 	private boolean verificaExistenciaDeProcesso(Integer id) {
-		Processo processoEncontrado = processoRepository.findById(id).get();				
+		List<Processo> todosOsProcessos = processoRepository.findAll();
 		boolean status = false;
 		
-		if(id.equals(processoEncontrado.getId())) {
-			status = true;
+		for (Processo each : todosOsProcessos) {
+			if(id.equals(each.getId())) {
+				status = true;
+			}
 		}
+				
+//		Processo processoEncontrado = processoRepository.findById(id).get();				
+//		boolean status = false;
+//		
+//		if(id.equals(processoEncontrado.getId())) {
+//			status = true;
+//		}
 		return status;
 	}
 	
@@ -40,8 +49,18 @@ public class ProcessoService {
 		
 		Assunto assuntoLocalizado = assuntoRepository.findById(obj.getCdassunto().getId()).get();
 		Interessado interessadoLocalizado = interessadoRepository.findById(obj.getCdinteressado().getId()).get();
+		
+//		Não poderá ser cadastrado um novo processo com assuntos inesistentes no sistema
+		if(assuntoLocalizado == null) {
+			throw new RuntimeException("Assunto não localizado, favor informar um assunto válido.");
+		}
+		
+//		Não poderá ser cadastrado um novo processo com interessados inesistentes no sistema;
+		if(interessadoLocalizado == null) {
+			throw new RuntimeException("Interessado não localizado, favor informar um interessado válido.");
+		}
 
-		//		Não poderá ser cadastrado um novo processo com assuntos inativos;
+//		Não poderá ser cadastrado um novo processo com assuntos inativos;
 		if(assuntoLocalizado.getFlativo().charAt(0) == ativo) {
 			obj.setCdassunto(assuntoLocalizado);
 		} else {
@@ -72,7 +91,11 @@ public class ProcessoService {
 	
 //	3 - Deverá haver um endpoint para buscar um processo baseado na sua identificação única (ID);
 	public Processo buscarProcessoPorID(Integer id) {
-		return processoRepository.findById(id).get();
+		if(verificaExistenciaDeProcesso(id)) {
+			return processoRepository.findById(id).get();
+		} else {
+			throw new RuntimeException("Processo não localizado.");	
+		}
 	}	
 	
 //	4 - Deverá haver um endpoint para buscar um processo baseado no seu número de processo (CHAVEPROCESSO);
@@ -128,9 +151,13 @@ public class ProcessoService {
 	
 //	8 - Deverá haver um endpoint para exclusão de um processo baseado na sua identificação única (ID);
 	public List<Processo> removerProcessoPorID(Integer id) {
-		Processo processoFiltrado = processoRepository.findById(id).get();
-		processoRepository.delete(processoFiltrado);
-		
-		return processoRepository.findAll();
+		if(verificaExistenciaDeProcesso(id)) {
+			Processo processoFiltrado = processoRepository.findById(id).get();
+			processoRepository.delete(processoFiltrado);
+			
+			return processoRepository.findAll();	
+		} else {
+			throw new RuntimeException("Processo não localizado");
+		}
 	}
 }
