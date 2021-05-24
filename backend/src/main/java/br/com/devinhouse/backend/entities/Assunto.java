@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.data.annotation.CreatedDate;
+
 @Entity
 public class Assunto implements Serializable {
 	
@@ -19,13 +21,14 @@ public class Assunto implements Serializable {
 	@Column
 	private int id;
 	
-	@Column(nullable = false)
+	@Column(columnDefinition = "varchar(250) NOT NULL")
 	private String descricao;
 	
 	@Column(nullable = false)
+	@CreatedDate
 	private Date dtcadastro;
 	
-	@Column(nullable = false)	
+	@Column(columnDefinition = "char(1) NOT NULL default 'S'")	
 	private String flativo;
 	
 	public Assunto() {
