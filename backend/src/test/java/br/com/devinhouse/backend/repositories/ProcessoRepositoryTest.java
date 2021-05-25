@@ -62,7 +62,7 @@ public class ProcessoRepositoryTest {
 		
 		List<Processo> processosPorInteressado = processoRepository.findByCdinteressado(interessadoSalvo);
 		
-		assertThat(processosPorInteressado.size()).isEqualTo(1);
+		assertThat(processosPorInteressado.size()).isEqualTo(3);
 	}
 	
 	@Test
