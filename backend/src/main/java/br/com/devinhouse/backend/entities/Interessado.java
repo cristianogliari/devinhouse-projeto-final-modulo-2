@@ -11,8 +11,6 @@ import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.br.CPF;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Entity
 public class Interessado implements Serializable {
 	
@@ -20,20 +18,20 @@ public class Interessado implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(nullable = false)
+	@Column
 	private int id;
 	
-	@Column(nullable = false)
+	@Column(columnDefinition = "varchar(250) NOT NULL")
 	private String nminteressado;
 	
-	@Column(nullable = false)
+	@Column(columnDefinition = "varchar(50) NOT NULL")
 	@CPF
 	private String nuidentificacao;
 	
 	@Column(nullable = false)
 	private Date dtnascimento;
 	
-	@Column(nullable = false)
+	@Column(columnDefinition = "char(1) NOT NULL default 'S'")
 	private String flativo;
 	
 	public Interessado() {
