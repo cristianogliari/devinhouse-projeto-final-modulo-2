@@ -21,7 +21,7 @@ public class InteressadoServiceTeste {
 	private InteressadoService serviceImpl;
 	
 	@Test
-	public void buscarInteressadoPeloIdTeste() throws RuntimeException("Interessado não encontrado"); {
+	public void buscarInteressadoPeloIdTeste() {
 		Interessado interessado = serviceImpl.buscarInteressadoPeloId(1);
 		assertEquals("1", String.valueOf(interessado.getId()));
 		assertEquals("1995-05-18 21:00:00", interessado.getDtnascimento());
