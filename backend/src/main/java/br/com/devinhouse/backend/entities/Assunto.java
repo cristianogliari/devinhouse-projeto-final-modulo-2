@@ -11,6 +11,7 @@ import javax.persistence.Id;
 
 import org.springframework.data.annotation.CreatedDate;
 
+
 @Entity
 public class Assunto implements Serializable {
 	
