@@ -2,6 +2,7 @@ package br.com.devinhouse.backend.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -40,33 +41,32 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class AssuntoServiceTest {
 
-	private static final Assunto assunto = new Assunto(1, "Roubo", new Date(), "S");
+	private static final Assunto assunto = new Assunto(1, "Autorizacao para Corte de Arvores - Area Publica", new Date(), "S");
 
-	// @Autowired
 	@Mock
 	private AssuntoRepository assuntoRepository;
 
-	// @Autowired
 	@InjectMocks
-	private AssuntoService serviceImpl;
-
-	@Captor
-	private ArgumentCaptor<Assunto> captor;
+	private AssuntoService assuntoService;
 
 	@Test
 	public void cadastrarAssuntoTest() {
-		serviceImpl.cadastrarAssunto(assunto);
+		// given
+		assuntoService.cadastrarAssunto(assunto);
 
+		// when
 		ArgumentCaptor<Assunto> assuntoArgumentCaptor = ArgumentCaptor.forClass(Assunto.class);
-
+		
 		verify(assuntoRepository).save(assuntoArgumentCaptor.capture());
-
+		
 		Assunto capturedAssunto = assuntoArgumentCaptor.getValue();
-
+		
+		// then
 		assertThat(capturedAssunto).isEqualTo(assunto);
 	}
 
 	@Test
+	@Disabled
 	public void buscarAssuntoPeloIdTest() {
 //		Assunto assunto = serviceImpl.buscarAssuntoPeloId(1);
 //		assertEquals("Roubo", assunto.getDescricao());
@@ -87,8 +87,3 @@ public class AssuntoServiceTest {
 	}
 
 }
-
-/*
- * { "id": 16, "descricao": "carro roubado", "dtcadastro": "1995-05-19",
- * "flativo": "S" }
- */
