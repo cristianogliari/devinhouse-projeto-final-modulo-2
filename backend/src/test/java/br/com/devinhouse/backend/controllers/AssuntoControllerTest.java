@@ -5,7 +5,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import br.com.devinhouse.backend.entities.Assunto;
-import br.com.devinhouse.backend.entities.Interessado;
 import br.com.devinhouse.backend.services.AssuntoService;
 
 @WebMvcTest(value = AssuntoController.class)
@@ -59,7 +60,27 @@ public class AssuntoControllerTest {
 			.andExpect(jsonPath("id").value(assuntoACadastrar.getId()));
 	}
 		
-	// buscarTodosOsAssuntosController
+	@Test
+	void buscarTodosOsAssuntosControllerTest() throws Exception {
+		// given
+		List<Assunto> listaAssuntos = new ArrayList<Assunto>();
+		listaAssuntos.add(assunto);		
+		
+		given(assuntoService.buscarTodosOsAssuntos()).willReturn(listaAssuntos);
+		
+		MockHttpServletRequestBuilder requisicao = MockMvcRequestBuilders
+				.get("/assuntos/v1/buscar")
+				.accept(MediaType.APPLICATION_JSON)
+				.header("api-version", "v1");				
+		
+		// when
+		ResultActions retornoDeAcoes = mockMvc.perform(requisicao);
+		
+		// then
+		retornoDeAcoes
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("[0].id").value(assunto.getId()));
+	}
 
 	@Test
 	void buscarAssuntoPeloIdControllerTest() throws Exception  {
