@@ -23,7 +23,7 @@ import br.com.devinhouse.backend.repositories.InteressadoRepository;
 import br.com.devinhouse.backend.services.InteressadoService;
 
 @ExtendWith(MockitoExtension.class)
-public class InteressadoServiceTeste {
+public class InteressadoServiceTest {
 	
 	private static final Interessado interessado = new Interessado(1, "Fulano", "44431256040", new Date(), "S");
 	
