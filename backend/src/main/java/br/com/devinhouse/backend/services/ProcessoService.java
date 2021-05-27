@@ -34,12 +34,6 @@ public class ProcessoService {
 			}
 		}
 				
-//		Processo processoEncontrado = processoRepository.findById(id).get();				
-//		boolean status = false;
-//		
-//		if(id.equals(processoEncontrado.getId())) {
-//			status = true;
-//		}
 		return status;
 	}
 	
