@@ -1,5 +1,6 @@
 package br.com.devinhouse.backend.controllers;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import br.com.devinhouse.backend.entities.Assunto;
+import br.com.devinhouse.backend.entities.Interessado;
 import br.com.devinhouse.backend.services.AssuntoService;
 
 @WebMvcTest(value = AssuntoController.class)
@@ -58,5 +60,25 @@ public class AssuntoControllerTest {
 	}
 		
 	// buscarTodosOsAssuntosController
-	// buscarAssuntoPeloId
+
+	@Test
+	void buscarAssuntoPeloIdControllerTest() throws Exception  {
+		// given
+		Assunto assuntoABuscar = assunto;
+		int expectedID = 1;
+		given(assuntoService.buscarAssuntoPeloId(expectedID)).willReturn(assuntoABuscar);
+		
+		MockHttpServletRequestBuilder requisicao = MockMvcRequestBuilders
+				.get("/assuntos/v1/buscar/id/".concat(String.valueOf(expectedID)))
+				.accept(MediaType.APPLICATION_JSON)
+				.header("api-version", "v1");				
+		
+		// when
+		ResultActions retornoDeAcoes = mockMvc.perform(requisicao);
+		
+		// then
+		retornoDeAcoes
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("id").value(assuntoABuscar.getId()));
+	}
 }
