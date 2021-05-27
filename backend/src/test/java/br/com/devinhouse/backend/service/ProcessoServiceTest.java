@@ -1,6 +1,10 @@
 package br.com.devinhouse.backend.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import java.util.Date;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.devinhouse.backend.entities.Assunto;
 import br.com.devinhouse.backend.entities.Interessado;
 import br.com.devinhouse.backend.entities.Processo;
+import br.com.devinhouse.backend.repositories.AssuntoRepository;
+import br.com.devinhouse.backend.repositories.InteressadoRepository;
 import br.com.devinhouse.backend.repositories.ProcessoRepository;
 import br.com.devinhouse.backend.services.ProcessoService;
 
@@ -24,11 +30,43 @@ public class ProcessoServiceTest {
 	@Mock
 	private ProcessoRepository processoRepository;
 	
+	@Mock
+	private AssuntoRepository assuntoRepository;
+	
+	@Mock
+	private InteressadoRepository interessadoRepository;
+	
 	@InjectMocks
 	private ProcessoService processoService;
 	
 	@Test
 	void cadastrarProcessoTest() {
+		//  given
+		Processo processoASalvar = processo;
+		
+		when(assuntoRepository.findById(assunto.getId())).thenReturn(Optional.of(assunto));
+		when(interessadoRepository.findById(interessado.getId())).thenReturn(Optional.of(interessado));
+		when(processoRepository.save(processoASalvar)).thenReturn(processoASalvar);
+		
+		// when
+		Processo processoSalvo = processoService.cadastrarProcesso(processoASalvar);
+	
+		// then
+		assertThat(processoSalvo).isEqualTo(processoASalvar);
 		
 	}
+	
+	//  buscarTodosOsProcessos
+	//  buscarProcessoPorID
+	//  buscarProcessoPorChaveProcesso
+	//  buscarProcessosPorInteressados
+	//  buscarProcessosPorAssunto
+	//  atualizarProcessoPorID
+	//  removerProcessoPorID
+	
+		//  given
+		//  when
+		//  then
+	
+	
 }
