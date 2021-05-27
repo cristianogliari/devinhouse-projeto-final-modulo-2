@@ -31,9 +31,6 @@ public class InteressadoControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
-	// @Autowired
-	// private InteressadoRepository interessadoRepository;
-	
 	@MockBean
 	private InteressadoService interessadoService;
 	
