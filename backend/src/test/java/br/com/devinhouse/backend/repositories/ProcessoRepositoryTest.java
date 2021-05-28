@@ -35,6 +35,7 @@ public class ProcessoRepositoryTest {
 
 	@Test
 	void findByChaveprocessoTest() {
+		// given
 		Assunto assunto = new Assunto(1, "Corte de Arvores", new Date(), "S");
 		Assunto assuntoSalvo = assuntoRepository.save(assunto);
 		
@@ -44,13 +45,16 @@ public class ProcessoRepositoryTest {
 		Processo processo = new Processo(1, 1, "SOFT", "2021", "SOFT 1/2021", "Descricao teste", assuntoSalvo, interessadoSalvo);
 		Processo processoSalvo = processoRepository.save(processo);
 		
+		// when
 		Processo processoPorChaveprocesso = processoRepository.findByChaveprocesso("SOFT 1/2021");
 		
+		// then
 		assertThat(processoPorChaveprocesso.getChaveprocesso().equals(processoSalvo.getChaveprocesso()));
 	}
 	
 	@Test
 	void findByCdinteressadoTest() {
+		// given
 		Assunto assunto = new Assunto(1, "Corte de Arvores", new Date(), "S");
 		Assunto assuntoSalvo = assuntoRepository.save(assunto);
 		
@@ -59,14 +63,17 @@ public class ProcessoRepositoryTest {
 		
 		Processo processo = new Processo(1, 1, "SOFT", "2021", "SOFT 1/2021", "Descricao teste", assuntoSalvo, interessadoSalvo);
 		processoRepository.save(processo);
-		
+
+		// when
 		List<Processo> processosPorInteressado = processoRepository.findByCdinteressado(interessadoSalvo);
-		
+
+		// then
 		assertThat(processosPorInteressado.size()).isEqualTo(1);
 	}
 	
 	@Test
 	void findByCdassuntoTest() {
+		// given
 		Assunto assunto = new Assunto(1, "Corte de Arvores", new Date(), "S");
 		Assunto assuntoSalvo = assuntoRepository.save(assunto);
 		
@@ -75,9 +82,11 @@ public class ProcessoRepositoryTest {
 		
 		Processo processo = new Processo(1, 1, "SOFT", "2021", "SOFT 1/2021", "Descricao teste", assuntoSalvo, interessadoSalvo);
 		processoRepository.save(processo);
-		
+
+		// when
 		List<Processo> processosPorInteressado = processoRepository.findByCdassunto(assuntoSalvo);
 		
+		// then
 		assertThat(processosPorInteressado.size()).isEqualTo(1);
 	}
 }
